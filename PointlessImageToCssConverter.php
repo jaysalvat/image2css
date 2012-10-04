@@ -155,7 +155,7 @@ Class PointlessImageToCssConverter {
                 $style .= $step."px ";
 
                 if ($this->color_type === PointlessImageToCssConverter::RGBA) {
-                    $style .= "rgba(".$colors["red"].",".$colors["green"].",".$colors["blue"].",".$colors["alpha"].")";
+                    $style .= "rgba(".$colors["red"].",".$colors["green"].",".$colors["blue"].",1)";
                 } else {
                     $style .= strtoupper(
                         '#'.
