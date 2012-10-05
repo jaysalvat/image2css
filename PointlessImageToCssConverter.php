@@ -27,11 +27,12 @@ Class PointlessImageToCssConverter {
     private $image;
 
     CONST HEXA = 0;
-    CONST RGBA = 2;
+    CONST RGBA = 1;
+    CONST BEST = 2;
 
     public function __construct($filename) {
         $this->setPath($filename);
-        $this->setColorType(PointlessImageToCssConverter::HEXA);
+        $this->setColorType(PointlessImageToCssConverter::BEST);
         $this->setWidth(100);
         $this->setPixelSize(8);
         $this->setBlur(0);
@@ -39,7 +40,8 @@ Class PointlessImageToCssConverter {
 
     public function setColorType($type) {
         if ($type !== PointlessImageToCssConverter::HEXA 
-         && $type !== PointlessImageToCssConverter::RGBA) {
+         && $type !== PointlessImageToCssConverter::RGBA
+         && $type !== PointlessImageToCssConverter::BEST) {
             throw new Exception('Color type not allowed.');
         }
         $this->color_type = $type;
@@ -163,7 +165,8 @@ Class PointlessImageToCssConverter {
                     $style .= $this->getBlur() ? $this->getBlur()."px " : "0 ";
                     $style .= $step."px ";
 
-                    if ($this->color_type === PointlessImageToCssConverter::RGBA) {
+                    if ($this->color_type === PointlessImageToCssConverter::RGBA
+                    || ($this->color_type === PointlessImageToCssConverter::BEST && $alpha < 1)) {
                         $style .= "rgba(".$colors["red"].",".$colors["green"].",".$colors["blue"].",".$alpha.")";
                     } else {
                         $style .= strtoupper(
