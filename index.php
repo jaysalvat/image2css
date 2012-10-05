@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html>
 <head>
@@ -10,6 +9,7 @@
     $img = new PointlessImageToCssConverter("monalisa.jpg");
     $img->setWidth(200);
     $img->setPixelSize(4);
+    $img->setColorType(PointlessImageToCssConverter::HEXA);
     $img->setBlur(4);
 
     echo $img->computeStyle();

@@ -113,9 +113,16 @@ Class PointlessImageToCssConverter {
     public function resize($width) {
         $ratio  = $width / $this->getImageWidth();
         $height = $this->getImageHeight() * $ratio;
-       
+
         $new_image = imagecreatetruecolor($width, $height);
+        imagealphablending($new_image, false);
+        imagesavealpha($new_image,true);
+
+        $transparent = imagecolorallocatealpha($new_image, 255, 255, 255, 127);
+        imagefilledrectangle($new_image, 0, 0, $width, $height, $transparent);
+
         imagecopyresampled($new_image, $this->image, 0, 0, 0, 0, $width, $height, $this->getImageWidth(), $this->getImageHeight());
+
         $this->image = $new_image;
     }
 
@@ -146,25 +153,28 @@ Class PointlessImageToCssConverter {
         $style .= "    height:0;\n";
         $style .= "    box-shadow:\n";
         foreach($pixels as $row => $cols) {
-            $style .= "\n";
             foreach($cols as $col => $colors) {
-                $style .= '   ';
-                $style .= sprintf("%4s", $col * $step)."px ";
-                $style .= sprintf("%2s", $row * $step)."px ";
-                $style .= $this->getBlur() ? $this->getBlur()."px " : "0 ";
-                $style .= $step."px ";
+                $alpha = round(($colors["alpha"] / -127) + 1, 1);
 
-                if ($this->color_type === PointlessImageToCssConverter::RGBA) {
-                    $style .= "rgba(".$colors["red"].",".$colors["green"].",".$colors["blue"].",1)";
-                } else {
-                    $style .= strtoupper(
-                        '#'.
-                        $this->rgb2hexa($colors['red']).
-                        $this->rgb2hexa($colors['green']).
-                        $this->rgb2hexa($colors['blue'])
-                    );
+                if ($alpha) {
+                    $style .= '   ';
+                    $style .= sprintf("%4s", $col * $step)."px ";
+                    $style .= sprintf("%2s", $row * $step)."px ";
+                    $style .= $this->getBlur() ? $this->getBlur()."px " : "0 ";
+                    $style .= $step."px ";
+
+                    if ($this->color_type === PointlessImageToCssConverter::RGBA) {
+                        $style .= "rgba(".$colors["red"].",".$colors["green"].",".$colors["blue"].",".$alpha.")";
+                    } else {
+                        $style .= strtoupper(
+                            '#'.
+                            $this->rgb2hexa($colors['red']).
+                            $this->rgb2hexa($colors['green']).
+                            $this->rgb2hexa($colors['blue'])
+                        );
+                    }
+                    $style .=",\n";
                 }
-                $style .=",\n";
             }
         }
         return preg_replace('/,$/', ';', $style);
