@@ -1,7 +1,7 @@
 # Pointless Image To CSS box-shadow Converter
 
 You suck at CSS but want to impress your friends anyway?
-This PHP class converts an image to thounsands of CSS lines of box-shadow properties. It's totally pointless... but life is pointless...
+This PHP class converts an image to thousands of CSS lines of box-shadow properties. It's totally pointless... but life is pointless...
 
 ## Demo:
 
