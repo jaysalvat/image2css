@@ -24,6 +24,7 @@ Class PointlessImageToCssConverter {
     private $blur;
     private $color_type;
     private $pixel_size;
+    private $true_color;
     private $image;
 
     CONST HEXA = 0;
@@ -36,6 +37,7 @@ Class PointlessImageToCssConverter {
         $this->setWidth(100);
         $this->setPixelSize(8);
         $this->setBlur(0);
+        $this->setTrueColor(true);
     }
 
     public function setColorType($type) {
@@ -83,6 +85,14 @@ Class PointlessImageToCssConverter {
         return $this->pixel_size;
     }
 
+    public function setTrueColor($true_color) {
+        $this->true_color = $true_color;
+    }
+
+    public function getTrueColor() {
+        return $this->true_color;
+    }
+
     public function load($filename) {
         $image_info = @getimagesize($filename);
 
@@ -116,7 +126,12 @@ Class PointlessImageToCssConverter {
         $ratio  = $width / $this->getImageWidth();
         $height = $this->getImageHeight() * $ratio;
 
-        $new_image = imagecreatetruecolor($width, $height);
+        if ($this->getTrueColor() == true) {
+            $new_image = imagecreatetruecolor($width, $height);
+        } else {
+            $new_image = imagecreate($width, $height);
+        }
+
         imagealphablending($new_image, false);
         imagesavealpha($new_image,true);
 
