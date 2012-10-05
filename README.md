@@ -19,4 +19,10 @@ http://codepen.io/jaysalvat/pen/HaqBf
     $img->setBlur(4);
 
     echo $img->computeStyle();
+
+## Note:
+
+GD extension required.
+
+http://www.php.net/manual/en/book.image.php
     
