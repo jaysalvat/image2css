@@ -1,7 +1,7 @@
 <?php
 /*
-    Pointless Image to CSS box-shadow Converter
-    Copyright (c) 2012, Jay Salvat
+    Pointless Image to CSS Converter
+    Copyright (c) 2012-2014, Jay Salvat
     http://jaysalvat.com
 
     DoWhateverYouWantWithIt-ButDontAbuse License.
@@ -17,7 +17,11 @@
     OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE 
     OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-Class PointlessImageToCssConverter {    
+    
+namespace Image2Css;
+
+class Converter
+{
     private $path;
     private $type;
     private $width;
@@ -31,37 +35,43 @@ Class PointlessImageToCssConverter {
     CONST RGBA = 1;
     CONST BEST = 2;
 
-    public function __construct($filename) {
+    public function __construct($filename)
+    {
         $this->setPath($filename);
-        $this->setColorType(PointlessImageToCssConverter::BEST);
+        $this->setColorType(\Image2Css\Converter::BEST);
         $this->setWidth(100);
         $this->setPixelSize(8);
         $this->setBlur(0);
         $this->setTrueColor(true);
     }
 
-    public function setColorType($type) {
-        if ($type !== PointlessImageToCssConverter::HEXA 
-         && $type !== PointlessImageToCssConverter::RGBA
-         && $type !== PointlessImageToCssConverter::BEST) {
+    public function setColorType($type)
+    {
+        if ($type !== \Image2Css\Converter::HEXA 
+         && $type !== \Image2Css\Converter::RGBA
+         && $type !== \Image2Css\Converter::BEST) {
             throw new Exception('Color type not allowed.');
         }
         $this->color_type = $type;
     }
 
-    public function getColorType() {
+    public function getColorType()
+    {
         return $this->color_type;
     }
 
-    public function setWidth($width) {
+    public function setWidth($width)
+    {
         $this->width = $width;
     }
 
-    public function getWidth() {
+    public function getWidth()
+    {
         return $this->width;
     }
 
-    public function setPath($path) {
+    public function setPath($path)
+    {
         $this->path = $path;
     }
 
@@ -69,7 +79,8 @@ Class PointlessImageToCssConverter {
         return $this->path;
     }
 
-    public function setBlur($blur) {
+    public function setBlur($blur)
+    {
         $this->blur = $blur;
     }
 
@@ -77,23 +88,28 @@ Class PointlessImageToCssConverter {
         return $this->blur;
     }
 
-    public function setPixelSize($size) {
+    public function setPixelSize($size)
+    {
         $this->pixel_size = $size;
     }
 
-    public function getPixelSize() {
+    public function getPixelSize()
+    {
         return $this->pixel_size;
     }
 
-    public function setTrueColor($true_color) {
+    public function setTrueColor($true_color)
+    {
         $this->true_color = $true_color;
     }
 
-    public function getTrueColor() {
+    public function getTrueColor()
+    {
         return $this->true_color;
     }
 
-    public function load($filename) {
+    public function load($filename)
+    {
         $image_info = @getimagesize($filename);
 
         if ($image_info) {
@@ -114,15 +130,18 @@ Class PointlessImageToCssConverter {
         }
     }
 
-    public function getImageWidth() {
+    public function getImageWidth()
+    {
         return imagesx($this->image);
     }
 
-    public function getImageHeight() {
+    public function getImageHeight()
+    {
         return imagesy($this->image);
     }
 
-    public function resize($width) {
+    public function resize($width)
+    {
         $ratio  = $width / $this->getImageWidth();
         $height = $this->getImageHeight() * $ratio;
 
@@ -143,13 +162,14 @@ Class PointlessImageToCssConverter {
         $this->image = $new_image;
     }
 
-    public function getColorMap() {
+    public function getColorMap()
+    {
         $colors = array();
         $iw = $this->getImageWidth();
         $ih = $this->getImageHeight();
-        for($h = 0; $h < $ih; $h++) {
+        for ($h = 0; $h < $ih; $h++) {
             $colors[$h] = array();
-            for($w = 0; $w < $iw; $w++) {
+            for ($w = 0; $w < $iw; $w++) {
                 $a = imagecolorat($this->image, $w, $h);
                 $b = imagecolorsforindex($this->image, $a);
                 $colors[$h][$w] = $b;
@@ -158,7 +178,8 @@ Class PointlessImageToCssConverter {
         return $colors;
     }
 
-    public function computeStyle() {
+    public function computeStyle()
+    {
         $this->load($this->getPath());
         $this->resize($this->getWidth());
 
@@ -169,8 +190,9 @@ Class PointlessImageToCssConverter {
         $style  = "    width:0;\n";
         $style .= "    height:0;\n";
         $style .= "    box-shadow:\n";
-        foreach($pixels as $row => $cols) {
-            foreach($cols as $col => $colors) {
+        
+        foreach ($pixels as $row => $cols) {
+            foreach ($cols as $col => $colors) {
                 $alpha = round(($colors["alpha"] / -127) + 1, 1);
 
                 if ($alpha) {
@@ -180,8 +202,8 @@ Class PointlessImageToCssConverter {
                     $style .= $this->getBlur() ? $this->getBlur()."px " : "0 ";
                     $style .= $step."px ";
 
-                    if ($this->color_type === PointlessImageToCssConverter::RGBA
-                    || ($this->color_type === PointlessImageToCssConverter::BEST && $alpha < 1)) {
+                    if ($this->color_type === \Image2Css\Converter::RGBA
+                    || ($this->color_type === \Image2Css\Converter::BEST && $alpha < 1)) {
                         $style .= "rgba(".$colors["red"].",".$colors["green"].",".$colors["blue"].",".$alpha.")";
                     } else {
                         $style .= strtoupper(
@@ -198,11 +220,13 @@ Class PointlessImageToCssConverter {
         return preg_replace('/,$/', ';', $style);
     }
 
-    public function __toString() {
+    public function __toString()
+    {
         return $this->computeStyle();
     }
 
-    private function rgb2hexa($value) {
+    private function rgb2hexa($value)
+    {
         return str_pad(dechex($value), 2, '0', STR_PAD_LEFT);
     }
 }

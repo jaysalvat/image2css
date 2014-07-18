@@ -1,0 +1,20 @@
+{
+    "name": "jaysalvat/image2css",
+    "description": "Pointless Image To CSS box-shadow Converter",
+    "version": "0.1.0",
+    "license": "MIT",
+    "homepage": "https://github.com/jaysalvat/image2css",
+    "keywords": ["image", "css", "converter"],
+    "authors": [
+        {
+            "name": "Jay Salvat",
+            "email": "jay@jaysalvat.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0"
+    },
+    "autoload": {
+        "psr-0": { "Image2Css": "src/" }
+    },
+}
