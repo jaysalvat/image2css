@@ -16,5 +16,5 @@
     },
     "autoload": {
         "psr-0": { "Image2Css": "src/" }
-    },
+    }
 }
