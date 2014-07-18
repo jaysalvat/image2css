@@ -50,7 +50,7 @@ class Converter
         if ($type !== \Image2Css\Converter::HEXA 
          && $type !== \Image2Css\Converter::RGBA
          && $type !== \Image2Css\Converter::BEST) {
-            throw new Exception('Color type not allowed.');
+            throw new \InvalidArgumentException('Color type not allowed.');
         }
         $this->color_type = $type;
     }
@@ -123,10 +123,10 @@ class Converter
                     $this->image = imagecreatefrompng($filename);
                 break;
                 default:
-                    throw new Exception('Image Type not allowed.');
+                    throw new \InvalidArgumentException('Image Type not allowed.');
             }
         } else {
-            throw new Exception('The file must be a valid image.');
+            throw new \InvalidArgumentException('The file must be a valid image.');
         }
     }
 
