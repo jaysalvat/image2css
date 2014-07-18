@@ -19,7 +19,7 @@ Create a [composer.json](https://getcomposer.org/) file with:
        }
     }
 
-And run [Composer](https://getcomposer.org/) to install Silex
+And run [Composer](https://getcomposer.org/) to install Image2Css.
 
     $ curl -sS https://getcomposer.org/installer | php
     $ composer.phar install
