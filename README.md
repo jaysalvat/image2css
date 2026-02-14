@@ -1,4 +1,4 @@
-# Pointless Image To CSS Converter
+# Image To CSS Converter
 
 [![Latest Stable Version](https://poser.pugx.org/jaysalvat/image2css/v/stable.svg)](https://packagist.org/packages/jaysalvat/image2css)
 [![License](https://poser.pugx.org/jaysalvat/image2css/license.svg)](https://packagist.org/packages/jaysalvat/image2css)
