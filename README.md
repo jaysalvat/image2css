@@ -4,7 +4,7 @@
 [![License](https://poser.pugx.org/jaysalvat/image2css/license.svg)](https://packagist.org/packages/jaysalvat/image2css)
 
 You suck at CSS but want to impress your friends anyway?
-This PHP class converts an image to thousands of CSS lines of box-shadow properties. It's totally pointless... but life is pointless...
+This PHP class converts an image to thousands of CSS lines of box-shadow properties. 
 
 ## Demo:
 
